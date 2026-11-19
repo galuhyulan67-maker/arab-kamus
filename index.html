@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kamus Bahasa Arab & Shorof</title>
+  
+  <!-- Google Fonts: Amiri & Noto Naskh Arabic untuk Teks Arab, Inter untuk Teks Latin -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       VARIABEL WARNA & TEMA (MODE TERANG & GELAP OTOMATIS + MANUAL)
+       ========================================================================== */
+    :root {
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-hover: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      
+      /* Satu Warna Aksen Utama: Hijau Zamrud (Emerald) */
+      --accent: #059669;
+      --accent-hover: #047857;
+      --accent-soft: #ecfdf5;
+      --accent-text: #065f46;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+      --font-latin: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-arab: 'Noto Naskh Arabic', 'Amiri', 'Traditional Arabic', serif;
+    }
+
+    /* Tema Gelap (Dark Mode) */
+    [data-theme="dark"] {
+      --bg-body: #0b1120;
+      --bg-card: #131c31;
+      --bg-subtle: #1e293b;
+      --bg-hover: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-color: #1e293b;
+
+      --accent: #10b981;
+      --accent-hover: #34d399;
+      --accent-soft: rgba(16, 185, 129, 0.14);
+      --accent-text: #6ee7b7;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ==========================================================================
+       RESET & GAYA DASAR
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-latin);
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .arab {
+      font-family: var(--font-arab);
+      direction: rtl;
+      unicode-bidi: isolate;
+      line-height: 1.85;
+    }
+
+    /* ==========================================================================
+       LAYOUT UTAMA & HEADER
+       ========================================================================== */
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 0 16px 64px;
+    }
+
+    header {
+      padding: 20px 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--accent);
+      color: #ffffff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-arab);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .brand-title h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-radius: 10px;
+      height: 38px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .icon-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .icon-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    /* ==========================================================================
+       KOLOM PENCARIAN & FILTER
+       ========================================================================== */
+    .search-section {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--bg-body);
+      padding: 8px 0 14px;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 54px;
+      padding: 0 48px 0 46px;
+      font-size: 1.05rem;
+      font-family: var(--font-latin);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    /* Jika input mengandung huruf Arab, perbesar sedikit agar nyaman */
+    .search-input.is-arabic {
+      font-family: var(--font-arab);
+      font-size: 1.45rem;
+      text-align: right;
+      direction: rtl;
+      padding: 0 46px 0 48px;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 12px;
+      background: var(--bg-subtle);
+      border: none;
+      color: var(--text-muted);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .clear-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    /* Tab Filter & Statistik */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .result-count {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Riwayat Pencarian Chips */
+    .history-wrap {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .history-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+
+    .history-chip {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: none;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .history-chip:hover {
+      background: var(--accent-soft);
+      color: var(--accent-text);
+    }
+
+    .history-clear {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    /* ==========================================================================
+       DAFTAR KARTU HASIL PENCARIAN
+       ========================================================================== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .word-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .word-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      background: var(--accent-soft);
+      color: var(--accent-text);
+    }
+
+    .badge-neutral {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+    }
+
+    .card-latin {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .card-arti {
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .card-arab {
+      font-size: 1.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       HALAMAN DETAIL KATA
+       ========================================================================== */
+    .detail-view {
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .detail-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .back-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .detail-hero {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .hero-arab-wrap {
+      width: 100%;
+      text-align: right;
+      margin: 8px 0 12px;
+      padding: 12px 16px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hero-arab {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .action-circle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .action-circle.fav-active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero-latin {
+      font-size: 1.05rem;
+      color: var(--accent-text);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .hero-arti {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Info Grid (Akar, Bab, Jenis, dll) */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .info-item {
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .info-value {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .info-value.arab {
+      font-size: 1.35rem;
+    }
+
+    /* Section Card di Detail */
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    /* Contoh Kalimat */
+    .example-item {
+      padding: 12px 16px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+    }
+
+    .example-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .example-arab-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .example-arab {
+      font-size: 1.55rem;
+      font-weight: 600;
+      text-align: right;
+      flex: 1;
+    }
+
+    .example-arti {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================================================
+       TABEL TASHRIF (ISTILAHI & LUGHAWI) & BENTUK ISIM
+       ========================================================================== */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    th {
+      background: var(--bg-subtle);
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    td.arab-cell {
+      font-family: var(--font-arab);
+      font-size: 1.45rem;
+      font-weight: 700;
+      text-align: right;
+      direction: rtl;
+      color: var(--text-primary);
+    }
+
+    .cell-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .mini-btn {
+      background: var(--bg-subtle);
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+
+    .mini-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--bg-card);
+    }
+
+    /* Tab Sub-Tashrif Lughawi */
+    .lughawi-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       STATUS LOADING, ERROR, KOSONG & TOAST
+       ========================================================================== */
+    .state-box {
+      text-align: center;
+      padding: 48px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      margin-top: 16px;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 14px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-box {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text-primary);
+      color: var(--bg-body);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .note-box {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      color: var(--accent-text);
+      font-size: 0.85rem;
+    }
+
+    /* Responsif HP */
+    @media (max-width: 600px) {
+      .hero-arab {
+        font-size: 2.4rem;
+      }
+      .card-arab {
+        font-size: 1.65rem;
+      }
+      .detail-hero, .section-card {
+        padding: 16px;
+      }
+      th, td {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="brand" id="brandHome" title="Kembali ke Beranda">
+        <div class="brand-icon">ع</div>
+        <div class="brand-title">
+          <h1>Kamus Arab & Shorof</h1>
+          <p>Pencarian & Tashrif Lengkap</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="btnShowFav" title="Lihat Daftar Favorit">
+          <span>★</span>
+          <span id="favCountBadge">0</span>
+        </button>
+        <button class="icon-btn" id="btnThemeToggle" title="Ganti Mode Terang/Gelap">
+          <span id="themeIcon">🌓</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- TAMPILAN UTAMA: PENCARIAN & DAFTAR KATA -->
+    <main id="mainView">
+      <section class="search-section">
+        <div class="search-box">
+          <span class="search-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+          </span>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Cari kata Arab (كتب / كَتَبَ) atau arti Indonesia..."
+            autocomplete="off"
+          />
+          <button class="clear-btn" id="clearSearchBtn" title="Hapus pencarian">✕</button>
+        </div>
+
+        <!-- Filter Tipe Kata -->
+        <div class="filter-bar">
+          <div class="tabs" id="filterTabs">
+            <button class="tab-btn active" data-filter="semua">Semua</button>
+            <button class="tab-btn" data-filter="fiil">Fi'il (Kata Kerja)</button>
+            <button class="tab-btn" data-filter="isim">Isim (Kata Benda)</button>
+            <button class="tab-btn" data-filter="harf">Harf</button>
+            <button class="tab-btn" data-filter="favorit">★ Favorit</button>
+          </div>
+          <div class="result-count" id="resultCount">Memuat...</div>
+        </div>
+
+        <!-- Riwayat Pencarian -->
+        <div class="history-wrap" id="historyContainer" style="display: none;"></div>
+      </section>
+
+      <!-- Area Status Loading / Error / Hasil -->
+      <div id="statusContainer">
+        <div class="state-box">
+          <div class="spinner"></div>
+          <p><strong>Memuat kamus...</strong></p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Menyiapkan indeks pencarian dan data tashrif</p>
+        </div>
+      </div>
+
+      <section class="cards-grid" id="resultsList" style="display: none;"></section>
+    </main>
+
+    <!-- TAMPILAN DETAIL KATA -->
+    <section id="detailView" class="detail-view" style="display: none;"></section>
+  </div>
+
+  <!-- Notifikasi Toast -->
+  <div id="toast" class="toast">Tersalin ke papan klip</div>
+
+  <script>
+    /**
+     * ==========================================================================
+     * APLIKASI KAMUS BAHASA ARAB & SHOROF
+     * ==========================================================================
+     */
+
+    // State Aplikasi
+    const state = {
+      entries: [],           // Seluruh data dari data.json
+      indexedEntries: [],    // Data yang sudah dinormalisasi untuk pencarian super cepat
+      currentFilter: 'semua',
+      searchQuery: '',
+      favorites: JSON.parse(localStorage.getItem('kamus_arab_fav') || '[]'),
+      history: JSON.parse(localStorage.getItem('kamus_arab_history') || '[]'),
+      selectedWord: null,
+      activeLughawiTab: 'madhi'
+    };
+
+    // Daftar 14 Dhamir Bahasa Arab
+    const DHAMIR_LIST = [
+      { arab: 'هُوَ', latin: 'Huwa (Dia lk. 1)' },
+      { arab: 'هُمَا', latin: 'Humaa (Mereka lk. 2)' },
+      { arab: 'هُمْ', latin: 'Hum (Mereka lk. >2)' },
+      { arab: 'هِيَ', latin: 'Hiya (Dia pr. 1)' },
+      { arab: 'هُمَا', latin: 'Humaa (Mereka pr. 2)' },
+      { arab: 'هُنَّ', latin: 'Hunna (Mereka pr. >2)' },
+      { arab: 'أَنْتَ', latin: 'Anta (Kamu lk. 1)' },
+      { arab: 'أَنْتُمَا', latin: 'Antumaa (Kalian lk. 2)' },
+      { arab: 'أَنْتُمْ', latin: 'Antum (Kalian lk. >2)' },
+      { arab: 'أَنْتِ', latin: 'Anti (Kamu pr. 1)' },
+      { arab: 'أَنْتُمَا', latin: 'Antumaa (Kalian pr. 2)' },
+      { arab: 'أَنْتُنَّ', latin: 'Antunna (Kalian pr. >2)' },
+      { arab: 'أَنَا', latin: 'Anaa (Saya)' },
+      { arab: 'نَحْنُ', latin: 'Nahnu (Kami/Kita)' }
+    ];
+
+    // Daftar 6 Dhamir untuk Fi'il Amr & Nahi (Mukhatab)
+    const DHAMIR_AMR_LIST = [
+      { arab: 'أَنْتَ', latin: 'Anta (Kamu lk. 1)' },
+      { arab: 'أَنْتُمَا', latin: 'Antumaa (Kalian lk. 2)' },
+      { arab: 'أَنْتُمْ', latin: 'Antum (Kalian lk. >2)' },
+      { arab: 'أَنْتِ', latin: 'Anti (Kamu pr. 1)' },
+      { arab: 'أَنْتُمَا', latin: 'Antumaa (Kalian pr. 2)' },
+      { arab: 'أَنْتُنَّ', latin: 'Antunna (Kalian pr. >2)' }
+    ];
+
+    // Label Tashrif Istilahi
+    const ISTILAHI_LABELS = [
+      { key: 'madhi', label: 'Fi\'il Madhi (Lampau)' },
+      { key: 'mudhari', label: 'Fi\'il Mudhari\' (Sekarang/Akan)' },
+      { key: 'amr', label: 'Fi\'il Amr (Perintah)' },
+      { key: 'nahi', label: 'Fi\'il Nahi (Larangan)' },
+      { key: 'isim_fail', label: 'Isim Fa\'il (Pelaku)' },
+      { key: 'isim_maful', label: 'Isim Maf\'ul (Objek)' },
+      { key: 'mashdar', label: 'Mashdar (Kata Dasar)' },
+      { key: 'isim_zaman_makan', label: 'Isim Zaman & Makan (Waktu/Tempat)' },
+      { key: 'isim_alat', label: 'Isim Alat (Perkakas)' }
+    ];
+
+    // ==========================================================================
+    // FUNGSI NORMALISASI TEKS ARAB & PENCARIAN
+    // ==========================================================================
+
+    /**
+     * Menghapus harakat (tashkeel) dan menormalkan variasi huruf Arab:
+     * - أ إ آ ٱ -> ا
+     * - ة -> ه
+     * - ى -> ي
+     * - Menghapus tatweel (ـ)
+     */
+    function normalizeArabic(text) {
+      if (!text) return '';
+      return text
+        .replace(/[\u064B-\u065F\u0670\u0640]/g, '') // Hapus harakat, fathah berdiri, tatweel
+        .replace(/[أإآٱ]/g, 'ا')                     // Normalisasi Hamzah/Alif
+        .replace(/ة/g, 'ه')                          // Ta Marbutah -> Ha
+        .replace(/ى/g, 'ي')                          // Alif Maqsurah -> Ya
+        .trim();
+    }
+
+    /**
+     * Mendeteksi apakah teks mengandung karakter Arab
+     */
+    function containsArabic(text) {
+      return /[\u0600-\u06FF]/.test(text);
+    }
+
+    /**
+     * Membangun indeks pencarian di memori agar ribuan entri tetap instan dicari
+     */
+    function buildSearchIndex(data) {
+      return data.map(item => {
+        // Kumpulkan semua variasi bentuk kata Arab (akar, tashrif, jamak, dll)
+        let extraArab = [];
+        if (item.akar) extraArab.push(item.akar.replace(/\s+/g, ''));
+        if (item.jamak) extraArab.push(item.jamak);
+        if (item.tatsniyah) extraArab.push(item.tatsniyah);
+        if (item.tashrif_istilahi) {
+          extraArab.push(...Object.values(item.tashrif_istilahi).filter(Boolean));
+        }
+
+        const normArab = normalizeArabic(item.arab);
+        const normExtraArab = normalizeArabic(extraArab.join(' '));
+        const normLatin = (item.latin || '').toLowerCase();
+        const normArti = (item.arti || '').toLowerCase();
+
+        return {
+          raw: item,
+          normArab,
+          normExtraArab,
+          normLatin,
+          normArti
+        };
+      });
+    }
+
+    // ==========================================================================
+    // INISIALISASI TEMA (TERANG / GELAP)
+    // ==========================================================================
+    function initTheme() {
+      const savedTheme = localStorage.getItem('kamus_arab_theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const activeTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+      applyTheme(activeTheme);
+
+      // Dengarkan perubahan tema perangkat secara otomatis jika user belum mengatur manual
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('kamus_arab_theme')) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      const iconEl = document.getElementById('themeIcon');
+      iconEl.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('kamus_arab_theme', next);
+      applyTheme(next);
+    }
+
+    // ==========================================================================
+    // MEMUAT DATA DARI data.json
+    // ==========================================================================
+    async function loadDictionary() {
+      const statusContainer = document.getElementById('statusContainer');
+      const resultsList = document.getElementById('resultsList');
+
+      try {
+        const response = await fetch('data.json');
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+        const data = await response.json();
+        if (!Array.isArray(data)) {
+          throw new Error('Format data.json tidak valid (harus berupa array).');
+        }
+
+        state.entries = data;
+        state.indexedEntries = buildSearchIndex(data);
+
+        statusContainer.style.display = 'none';
+        resultsList.style.display = 'grid';
+
+        updateFavBadge();
+        renderHistory();
+        filterAndRender();
+      } catch (error) {
+        console.error('Gagal memuat kamus:', error);
+        statusContainer.innerHTML = `
+          <div class="state-box error-box">
+            <p style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Data tidak dapat dimuat</p>
+            <p style="color: var(--text-secondary); max-width: 480px; margin: 0 auto; font-size: 0.92rem;">
+              Data tidak dapat dimuat. Pastikan <strong>data.json</strong> berada di folder yang sama dengan <strong>index.html</strong> dan buka lewat GitHub Pages (atau server lokal), bukan langsung dari file (file://).
+            </p>
+          </div>
+        `;
+        document.getElementById('resultCount').textContent = '0 kata';
+      }
+    }
+
+    // ==========================================================================
+    // PENCARIAN & RENDER DAFTAR KARTU
+    // ==========================================================================
+    function filterAndRender() {
+      const query = state.searchQuery.trim();
+      const isArabQuery = containsArabic(query);
+      const normQuery = isArabQuery ? normalizeArabic(query) : query.toLowerCase();
+
+      const filtered = state.indexedEntries.filter(item => {
+        // 1. Filter Kategori / Favorit
+        if (state.currentFilter === 'favorit') {
+          if (!state.favorites.includes(item.raw.id)) return false;
+        } else if (state.currentFilter !== 'semua') {
+          if (item.raw.tipe !== state.currentFilter) return false;
+        }
+
+        // 2. Filter Kata Kunci Pencarian
+        if (!normQuery) return true;
+
+        if (isArabQuery) {
+          return (
+            item.normArab.includes(normQuery) ||
+            item.normExtraArab.includes(normQuery)
+          );
+        } else {
+          return (
+            item.normArti.includes(normQuery) ||
+            item.normLatin.includes(normQuery)
+          );
+        }
+      });
+
+      // Urutkan agar kecocokan paling tepat muncul di atas
+      if (normQuery) {
+        filtered.sort((a, b) => {
+          const aExact = isArabQuery ? a.normArab === normQuery : a.normArti === normQuery;
+          const bExact = isArabQuery ? b.normArab === normQuery : b.normArti === normQuery;
+          if (aExact && !bExact) return -1;
+          if (!aExact && bExact) return 1;
+
+          const aStarts = isArabQuery ? a.normArab.startsWith(normQuery) : a.normArti.startsWith(normQuery);
+          const bStarts = isArabQuery ? b.normArab.startsWith(normQuery) : b.normArti.startsWith(normQuery);
+          if (aStarts && !bStarts) return -1;
+          if (!aStarts && bStarts) return 1;
+          return 0;
+        });
+      }
+
+      renderCards(filtered);
+    }
+
+    function renderCards(list) {
+      const resultsList = document.getElementById('resultsList');
+      const statusContainer = document.getElementById('statusContainer');
+      const resultCount = document.getElementById('resultCount');
+
+      resultCount.textContent = `${list.length} kata ditemukan`;
+
+      if (list.length === 0) {
+        resultsList.style.display = 'none';
+        statusContainer.style.display = 'block';
+        statusContainer.innerHTML = `
+          <div class="state-box">
+            <p style="font-weight: 600; font-size: 1.05rem;">Kata tidak ditemukan</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+              Coba kata kunci lain atau periksa filter kategori yang aktif.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      statusContainer.style.display = 'none';
+      resultsList.style.display = 'grid';
+
+      // Batasi render awal hingga 150 kartu agar tetap super ringan
+      const displayList = list.slice(0, 150);
+
+      resultsList.innerHTML = displayList.map(({ raw }) => {
+        const tipeLabel = formatTipeLabel(raw.tipe);
+        const isFav = state.favorites.includes(raw.id);
+        return `
+          <article class="word-card" onclick="openDetail('${raw.id}')">
+            <div class="card-left">
+              <div class="card-meta">
+                <span class="badge">${tipeLabel}</span>
+                ${raw.akar ? `<span class="badge badge-neutral arab">${raw.akar}</span>` : ''}
+                <span class="card-latin">${escapeHtml(raw.latin)}</span>
+              </div>
+              <div class="card-arti">${escapeHtml(raw.arti)}</div>
+            </div>
+            <div class="card-right">
+              ${isFav ? '<span style="color: var(--accent); font-size: 1.1rem;" title="Favorit">★</span>' : ''}
+              <div class="card-arab arab">${raw.arab}</div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // ==========================================================================
+    // HALAMAN DETAIL KATA & TASHRIF
+    // ==========================================================================
+    function openDetail(id) {
+      const word = state.entries.find(item => item.id === id);
+      if (!word) return;
+
+      // Simpan ke riwayat pencarian jika ada query atau kata diklik
+      addToHistory(word.arab);
+
+      state.selectedWord = word;
+      state.activeLughawiTab = 'madhi';
+
+      document.getElementById('mainView').style.display = 'none';
+      const detailView = document.getElementById('detailView');
+      detailView.style.display = 'block';
+
+      renderDetailContent(word);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeDetail() {
+      state.selectedWord = null;
+      document.getElementById('detailView').style.display = 'none';
+      document.getElementById('mainView').style.display = 'block';
+      filterAndRender();
+    }
+
+    function renderDetailContent(word) {
+      const detailView = document.getElementById('detailView');
+      const isFav = state.favorites.includes(word.id);
+      const tipeLabel = formatTipeLabel(word.tipe);
+
+      // Info tambahan sesuai jenis kata
+      let metaItemsHtml = '';
+      if (word.akar) {
+        metaItemsHtml += `
+          <div class="info-item">
+            <div class="info-label">Akar Kata (Jadzr)</div>
+            <div class="info-value arab">${word.akar}</div>
+          </div>
+        `;
+      }
+      if (word.wazan) {
+        metaItemsHtml += `
+          <div class="info-item">
+            <div class="info-label">Wazan</div>
+            <div class="info-value arab">${word.wazan}</div>
+          </div>
+        `;
+      }
+      if (word.bab) {
+        metaItemsHtml += `
+          <div class="info-item">
+            <div class="info-label">Bab Shorof</div>
+            <div class="info-value arab">${word.bab}</div>
+          </div>
+        `;
+      }
+      if (word.jenis) {
+        metaItemsHtml += `
+          <div class="info-item">
+            <div class="info-label">Jenis Bina'</div>
+            <div class="info-value" style="text-transform: capitalize;">${escapeHtml(word.jenis)}</div>
+          </div>
+        `;
+      }
+      if (word.jenis_kelamin) {
+        metaItemsHtml += `
+          <div class="info-item">
+            <div class="info-label">Gender (Jenis)</div>
+            <div class="info-value" style="text-transform: capitalize;">${escapeHtml(word.jenis_kelamin)}</div>
+          </div>
+        `;
+      }
+      if (word.jenis_jamak) {
+        metaItemsHtml += `
+          <div class="info-item">
+            <div class="info-label">Jenis Jamak</div>
+            <div class="info-value" style="text-transform: capitalize;">Jamak ${escapeHtml(word.jenis_jamak)}</div>
+          </div>
+        `;
+      }
+
+      // Bagian Khusus Fi'il (Tashrif Istilahi & Lughawi)
+      let specificSectionHtml = '';
+      if (word.tipe === 'fiil') {
+        specificSectionHtml += renderFiilSection(word);
+      } else if (word.tipe === 'isim') {
+        specificSectionHtml += renderIsimSection(word);
+      }
+
+      // Bagian Contoh Kalimat
+      let contohHtml = '';
+      if (word.contoh && word.contoh.length > 0) {
+        contohHtml = `
+          <div class="section-card">
+            <div class="section-title">Contoh Penggunaan dalam Kalimat</div>
+            ${word.contoh.map(c => `
+              <div class="example-item">
+                <div class="example-arab-row">
+                  <div class="cell-actions">
+                    <button class="mini-btn" onclick="speakArabic('${escapeAttr(c.arab)}')" title="Dengarkan">🔊</button>
+                    <button class="mini-btn" onclick="copyText('${escapeAttr(c.arab)}')" title="Salin">Salin</button>
+                  </div>
+                  <div class="example-arab arab">${c.arab}</div>
+                </div>
+                <div class="example-arti">${escapeHtml(c.arti)}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      detailView.innerHTML = `
+        <div class="detail-topbar">
+          <button class="back-btn" onclick="closeDetail()">
+            ← Kembali ke Pencarian
+          </button>
+          <span class="badge">${tipeLabel}</span>
+        </div>
+
+        <div class="detail-hero">
+          <div class="hero-arab-wrap">
+            <div class="hero-actions">
+              <button class="action-circle" onclick="speakArabic('${escapeAttr(word.arab)}')" title="Dengarkan Pelafalan (ar-SA)">
+                🔊
+              </button>
+              <button class="action-circle" onclick="copyText('${escapeAttr(word.arab)}')" title="Salin Kata Arab">
+                📋
+              </button>
+              <button class="action-circle ${isFav ? 'fav-active' : ''}" id="detailFavBtn" onclick="toggleFavorite('${word.id}')" title="Simpan ke Favorit">
+                ${isFav ? '★' : '☆'}
+              </button>
+            </div>
+            <div class="hero-arab arab">${word.arab}</div>
+          </div>
+
+          <div class="hero-latin">${escapeHtml(word.latin)}</div>
+          <div class="hero-arti">${escapeHtml(word.arti)}</div>
+
+          ${word.catatan ? `<div class="note-box">ℹ️ Catatan: ${escapeHtml(word.catatan)}</div>` : ''}
+
+          ${metaItemsHtml ? `<div class="info-grid">${metaItemsHtml}</div>` : ''}
+        </div>
+
+        ${specificSectionHtml}
+        ${contohHtml}
+      `;
+    }
+
+    /**
+     * Render Bagian Khusus ISIM (Mufrad, Tatsniyah, Jamak, Musytaq)
+     */
+    function renderIsimSection(word) {
+      const forms = [
+        { label: 'Mufrad (Tunggal)', val: word.mufrad || word.arab },
+        { label: 'Tatsniyah (Ganda / Dua)', val: word.tatsniyah },
+        { label: `Jamak (${word.jenis_jamak ? 'Jamak ' + word.jenis_jamak : 'Banyak'})`, val: word.jamak }
+      ].filter(f => f.val);
+
+      let musytaqHtml = '';
+      if (word.musytaq && word.musytaq.length > 0) {
+        musytaqHtml = `
+          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+            <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">
+              Isim Musytaq / Kata Turunan Terkait:
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${word.musytaq.map(m => `
+                <div style="background: var(--bg-subtle); padding: 6px 12px; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+                  <span class="arab" style="font-size: 1.3rem; font-weight: 700;">${m.arab}</span>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">(${escapeHtml(m.arti)})</span>
+                  <button class="mini-btn" onclick="copyText('${escapeAttr(m.arab)}')">Salin</button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="section-card">
+          <div class="section-title">Perubahan Bentuk Isim (Bilangan)</div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bentuk Bilangan</th>
+                  <th>Aksi</th>
+                  <th style="text-align: right;">Lafal Arab</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${forms.map(f => `
+                  <tr>
+                    <td>${escapeHtml(f.label)}</td>
+                    <td>
+                      <div class="cell-actions" style="justify-content: flex-start;">
+                        <button class="mini-btn" onclick="speakArabic('${escapeAttr(f.val)}')">🔊</button>
+                        <button class="mini-btn" onclick="copyText('${escapeAttr(f.val)}')">Salin</button>
+                      </div>
+                    </td>
+                    <td class="arab-cell">${f.val}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          ${musytaqHtml}
+        </div>
+      `;
+    }
+
+    /**
+     * Render Bagian Khusus FI'IL (Tabel Tashrif Istilahi & Tashrif Lughawi)
+     */
+    function renderFiilSection(word) {
+      let html = '';
+
+      // 1. Tabel Tashrif Istilahi
+      if (word.tashrif_istilahi) {
+        const rows = ISTILAHI_LABELS.filter(item => word.tashrif_istilahi[item.key]);
+        if (rows.length > 0) {
+          html += `
+            <div class="section-card">
+              <div class="section-title">Tashrif Istilahi</div>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Shighah (Bentuk)</th>
+                      <th>Aksi</th>
+                      <th style="text-align: right;">Lafal Arab</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rows.map(r => {
+                      const val = word.tashrif_istilahi[r.key];
+                      return `
+                        <tr>
+                          <td>${r.label}</td>
+                          <td>
+                            <div class="cell-actions" style="justify-content: flex-start;">
+                              <button class="mini-btn" onclick="speakArabic('${escapeAttr(val)}')">🔊</button>
+                              <button class="mini-btn" onclick="copyText('${escapeAttr(val)}')">Salin</button>
+                            </div>
+                          </td>
+                          <td class="arab-cell">${val}</td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // 2. Tabel Tashrif Lughawi (14 Dhamir)
+      if (word.tashrif_lughawi) {
+        const availableTabs = [];
+        if (word.tashrif_lughawi.madhi) availableTabs.push({ key: 'madhi', label: 'Fi\'il Madhi (14)' });
+        if (word.tashrif_lughawi.mudhari) availableTabs.push({ key: 'mudhari', label: 'Fi\'il Mudhari\' (14)' });
+        if (word.tashrif_lughawi.amr) availableTabs.push({ key: 'amr', label: 'Fi\'il Amr (6)' });
+        if (word.tashrif_lughawi.nahi) availableTabs.push({ key: 'nahi', label: 'Fi\'il Nahi (6)' });
+
+        if (availableTabs.length > 0) {
+          if (!availableTabs.some(t => t.key === state.activeLughawiTab)) {
+            state.activeLughawiTab = availableTabs[0].key;
+          }
+
+          html += `
+            <div class="section-card">
+              <div class="section-title">Tashrif Lughawi (Berdasarkan Dhamir)</div>
+              <div class="lughawi-tabs" id="lughawiTabs">
+                ${availableTabs.map(t => `
+                  <button 
+                    class="tab-btn ${state.activeLughawiTab === t.key ? 'active' : ''}" 
+                    onclick="switchLughawiTab('${t.key}')"
+                  >${t.label}</button>
+                `).join('')}
+              </div>
+              <div id="lughawiTableContainer">
+                ${buildLughawiTableHtml(word.tashrif_lughawi, state.activeLughawiTab)}
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      return html;
+    }
+
+    function switchLughawiTab(tabKey) {
+      state.activeLughawiTab = tabKey;
+      if (!state.selectedWord) return;
+
+      // Update status tombol tab
+      const btns = document.querySelectorAll('#lughawiTabs .tab-btn');
+      btns.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(`'${tabKey}'`));
+      });
+
+      const container = document.getElementById('lughawiTableContainer');
+      if (container) {
+        container.innerHTML = buildLughawiTableHtml(state.selectedWord.tashrif_lughawi, tabKey);
+      }
+    }
+
+    function buildLughawiTableHtml(lughawiData, tabKey) {
+      const forms = lughawiData[tabKey] || [];
+      const isSixForm = (tabKey === 'amr' || tabKey === 'nahi') && forms.length === 6;
+      const dhamirs = isSixForm ? DHAMIR_AMR_LIST : DHAMIR_LIST;
+
+      return `
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Dhamir</th>
+                <th>Aksi</th>
+                <th style="text-align: right;">Tashrif</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${forms.map((arabForm, idx) => {
+                const dhamir = dhamirs[idx] || { arab: '-', latin: '' };
+                return `
+                  <tr>
+                    <td>
+                      <span class="arab" style="font-size: 1.2rem; font-weight: 700; margin-left: 6px;">${dhamir.arab}</span>
+                      <span style="font-size: 0.8rem; color: var(--text-muted);">${dhamir.latin}</span>
+                    </td>
+                    <td>
+                      <div class="cell-actions" style="justify-content: flex-start;">
+                        <button class="mini-btn" onclick="speakArabic('${escapeAttr(arabForm)}')">🔊</button>
+                        <button class="mini-btn" onclick="copyText('${escapeAttr(arabForm)}')">Salin</button>
+                      </div>
+                    </td>
+                    <td class="arab-cell">${arabForm}</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // ==========================================================================
+    // FITUR TAMBAHAN: AUDIO (WEB SPEECH API), SALIN, FAVORIT, RIWAYAT
+    // ==========================================================================
+
+    /**
+     * Pelafalan bahasa Arab memakai Web Speech API (ar-SA)
+     */
+    function speakArabic(text) {
+      if (!('speechSynthesis' in window)) {
+        showToast('Browser Anda tidak mendukung fitur suara.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ar-SA';
+      utterance.rate = 0.88; // Sedikit lebih lambat agar harakat terdengar jelas
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /**
+     * Salin teks ke clipboard
+     */
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(`Tersalin: ${text}`);
+      } catch (err) {
+        // Fallback jika clipboard API dibatasi
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast(`Tersalin: ${text}`);
+      }
+    }
+
+    /**
+     * Kelola Favorit (localStorage)
+     */
+    function toggleFavorite(id) {
+      const index = state.favorites.indexOf(id);
+      if (index === -1) {
+        state.favorites.push(id);
+        showToast('Ditambahkan ke Favorit');
+      } else {
+        state.favorites.splice(index, 1);
+        showToast('Dihapus dari Favorit');
+      }
+      localStorage.setItem('kamus_arab_fav', JSON.stringify(state.favorites));
+      updateFavBadge();
+
+      // Update tombol favorit di detail view jika sedang terbuka
+      const favBtn = document.getElementById('detailFavBtn');
+      if (favBtn) {
+        const isFav = state.favorites.includes(id);
+        favBtn.classList.toggle('fav-active', isFav);
+        favBtn.textContent = isFav ? '★' : '☆';
+      }
+    }
+
+    function updateFavBadge() {
+      document.getElementById('favCountBadge').textContent = state.favorites.length;
+    }
+
+    /**
+     * Kelola Riwayat Pencarian (localStorage)
+     */
+    function addToHistory(term) {
+      const clean = term.trim();
+      if (!clean) return;
+      state.history = [clean, ...state.history.filter(item => item !== clean)].slice(0, 8);
+      localStorage.setItem('kamus_arab_history', JSON.stringify(state.history));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('historyContainer');
+      if (state.history.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+      container.style.display = 'flex';
+      container.innerHTML = `
+        <span class="history-label">Terakhir dilihat:</span>
+        ${state.history.map(h => `
+          <button class="history-chip ${containsArabic(h) ? 'arab' : ''}" onclick="applyHistory('${escapeAttr(h)}')">${escapeHtml(h)}</button>
+        `).join('')}
+        <button class="history-clear" onclick="clearHistory()">Hapus</button>
+      `;
+    }
+
+    function applyHistory(term) {
+      const input = document.getElementById('searchInput');
+      input.value = term;
+      handleSearchInput();
+    }
+
+    function clearHistory() {
+      state.history = [];
+      localStorage.removeItem('kamus_arab_history');
+      renderHistory();
+    }
+
+    // ==========================================================================
+    // UTILITAS & EVENT LISTENERS
+    // ==========================================================================
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function formatTipeLabel(tipe) {
+      if (tipe === 'fiil') return 'Fi\'il';
+      if (tipe === 'isim') return 'Isim';
+      if (tipe === 'harf') return 'Harf';
+      return tipe || 'Kata';
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escapeAttr(str) {
+      if (!str) return '';
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    function handleSearchInput() {
+      const input = document.getElementById('searchInput');
+      const clearBtn = document.getElementById('clearSearchBtn');
+      const val = input.value;
+
+      state.searchQuery = val;
+      clearBtn.style.display = val.length > 0 ? 'flex' : 'none';
+
+      // Ubah arah input menjadi RTL secara otomatis jika user mengetik huruf Arab
+      if (containsArabic(val)) {
+        input.classList.add('is-arabic');
+      } else {
+        input.classList.remove('is-arabic');
+      }
+
+      filterAndRender();
+    }
+
+    // Inisialisasi Event Listeners saat DOM siap
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      loadDictionary();
+
+      const searchInput = document.getElementById('searchInput');
+      const clearBtn = document.getElementById('clearSearchBtn');
+
+      searchInput.addEventListener('input', handleSearchInput);
+
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        handleSearchInput();
+        searchInput.focus();
+      });
+
+      // Tab Filter Kategori
+      document.getElementById('filterTabs').addEventListener('click', e => {
+        const btn = e.target.closest('.tab-btn');
+        if (!btn) return;
+        document.querySelectorAll('#filterTabs .tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.currentFilter = btn.dataset.filter;
+        filterAndRender();
+      });
+
+      // Tombol Favorit di Header
+      document.getElementById('btnShowFav').addEventListener('click', () => {
+        if (state.selectedWord) closeDetail();
+        const favTab = document.querySelector('#filterTabs .tab-btn[data-filter="favorit"]');
+        if (favTab) favTab.click();
+      });
+
+      // Tombol Pengalih Tema
+      document.getElementById('btnThemeToggle').addEventListener('click', toggleTheme);
+
+      // Klik Logo Kembali ke Awal
+      document.getElementById('brandHome').addEventListener('click', () => {
+        if (state.selectedWord) closeDetail();
+        searchInput.value = '';
+        state.currentFilter = 'semua';
+        document.querySelectorAll('#filterTabs .tab-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.filter === 'semua');
+        });
+        handleSearchInput();
+      });
+    });
+  </script>
+</body>
+</html>
